@@ -52,34 +52,33 @@ window.addEventListener('DOMContentLoaded', function(){
     // Аккордеон 2 
     const questions = () => {
         const accordionTwo = document.getElementById('accordion-two'),
-              collapseOneTwo = document.getElementById('collapseOne-two'),
-              collapseTwoTwo = document.getElementById('collapseTwo-two'),
-              collapseThreeTwo = document.getElementById('collapseThree-two');
+              questArr = ['headingOne-two', 'headingTwo-two', 'headingThree-two'],
+              objCallapseQuest = {
+                'headingOne-two' : 'collapseOne-two',
+                'headingTwo-two' : 'collapseTwo-two',
+                'headingThree-two' :'collapseThree-two'
+              };
 
-              const addClass = (panelOne, panelTwo, panelThree) => {
-                panelOne.classList.add('in');
-                panelTwo.classList.remove('in');
-                panelThree.classList.remove('in');
+              const addClass = (element) => {
+                  for ( let elem in objCallapseQuest) {
+                        if (elem === element) {
+                            document.getElementById(objCallapseQuest[elem]).classList.add('in');
+                        } else {
+                            document.getElementById(objCallapseQuest[elem]).classList.remove('in');
+                        }
+                  }
               }
 
         accordionTwo.addEventListener('click', (event) => {
             event.preventDefault();
             let target = event.target.closest('.panel-heading');
           
+            questArr.forEach(element => {
+                if(target !== null && element === target.id){
+                    addClass(element);
+                }
+            });
 
-            if (target !== null && 'headingOne-two' === target.id){
-                addClass(collapseOneTwo, collapseTwoTwo, collapseThreeTwo);
-              
-            
-            }else if (target !== null && 'headingTwo-two' === target.id){
-                addClass(collapseTwoTwo, collapseOneTwo, collapseThreeTwo);
-              
-
-            }else if (target !== null && 'headingThree-two' === target.id){
-                addClass(collapseThreeTwo, collapseTwoTwo, collapseOneTwo);
-                
-            }
-           
         });
 
     };
