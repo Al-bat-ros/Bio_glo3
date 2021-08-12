@@ -70,7 +70,7 @@ window.addEventListener('DOMContentLoaded', function(){
               }
 
         accordionTwo.addEventListener('click', (event) => {
-            event.preventDefault();
+           event.preventDefault();
             let target = event.target.closest('.panel-heading');
           
             questArr.forEach(element => {
@@ -106,38 +106,69 @@ window.addEventListener('DOMContentLoaded', function(){
 
     // Калькулятор аккорд
      const colcAccordion = () => {
-         const calcResult = document.getElementById('calc-result'), // вывод результата
-               panelGroup = document.querySelector('.panel-group'), // панель калькулятора
-               headingArrCalc = ['headingOne', 'headingTwo', 'headingThree', 'headingFour'],
-               objCallapse = {
-                'headingOne':'collapseOne',
-                'headingTwo':'collapseTwo',
-                'headingThree':'collapseThree',
-                'headingFour':'collapseFour'
-               };
-            
-               const openAcord = (selector) => {
+         const $calcResult = document.getElementById('calc-result'), // вывод результата
+               $panelGroup = document.querySelector('.panel-group'), // панель калькулятора
+                
+               panelHeadOpen = ['headingOne', 'headingTwo', 'headingThree', 'headingFour'],
+               panelCallapseOpen = ['collapseOne', 'collapseTwo', 'collapseThree', 'collapseFour'];
 
-                  for ( let elem in objCallapse){
+               
+                
+               $panelGroup.addEventListener('click', (event) => {
+                   let target = event.target
 
-                        if(objCallapse[elem] === objCallapse[selector]){
-                            document.getElementById(objCallapse[elem]).classList.add('in');
-                        } else {
-                            document.getElementById(objCallapse[elem]).classList.remove('in');
-                        }
+                   panelHeadOpen.forEach((elem) => {
+                       
+                    if(document.getElementById(`${elem}`) === target.closest(`${'#'}${elem}`)){
+                        panelOpenHead(target.closest(`${'#'}${elem}`).id)
+                    }
+                   })
+                //    panelCallapseOpen.forEach((elem) => {
+                //     if(document.querySelector('.construct-btn') === target.closest('.construct-btn') || ){panelOpenButt(target.closest('#collapseOne').id)}    
+                //    })
+                   
+                   //if(document.getElementById('headingOne') === target.closest('#headingOne')){panelOpenHead(target.closest('#headingOne').id)}
+                   //if(document.querySelector('.construct-btn') === target.closest('.construct-btn')){panelOpenButt(target.closest('#collapseOne').id)}
 
-                  }
-                    
+                });
+
+               const panelOpenHead = (selector) => {
+                   console.log(selector)
+               }
+               const panelOpenButt = (selector) => {
+                console.log(selector)
                }
 
-               panelGroup.addEventListener('click', (event) => {
-                    let target = event.target.closest('.panel-heading');
                     
-                    headingArrCalc.forEach(elem => {
-                       if(target !== null && elem === target.id){openAcord(elem)};
-                    });
+    
+
+
+            // вывод результата   
+               const enterResult = (num) => {
                      
-               })
+                     const stepSetInterval = (res) => {
+                         if(res) $calcResult.value = res;
+                     }
+                   
+                    let step = 1;
+                    let resNum = num;
+                    let n = 0;
+                    const idSet = setInterval(() => {
+                        resNum -= step;
+                        if (resNum <= 10){
+                            step = 1;
+                        } else {
+                            step = Math.round((resNum*10)/100);
+                        }
+                        stepSetInterval(n += step);
+                        if(resNum === 0){clearInterval(idSet)} 
+
+                    },10);
+
+
+               }
+               enterResult(1234);
+               
     }
     colcAccordion();
 
