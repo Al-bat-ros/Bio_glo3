@@ -109,11 +109,11 @@ window.addEventListener('DOMContentLoaded', function(){
          const $calcResult = document.getElementById('calc-result'), // вывод результата
                $panelGroup = document.querySelector('.panel-group'), // панель калькулятора
                 
-               panelHeadOpen = ['headingOne', 'headingTwo', 'headingThree', 'headingFour'],
-               panelCallapseOpen = ['collapseOne', 'collapseTwo', 'collapseThree', 'collapseFour'];
+               panelHeadOpen = ['headingOne', 'headingTwo', 'headingThree', 'headingFour'], //шапки вкладок конструктора
+               panelCallapseOpen = ['collapseOne', 'collapseTwo', 'collapseThree', 'collapseFour']; //кнопки следующий шаг
 
                
-                
+                //слушатель 
                $panelGroup.addEventListener('click', (event) => {
                    let target = event.target
 
@@ -122,6 +122,14 @@ window.addEventListener('DOMContentLoaded', function(){
                     if(document.getElementById(`${elem}`) === target.closest(`${'#'}${elem}`)){
                         panelOpenHead(target.closest(`${'#'}${elem}`).id)
                     }
+                   })
+
+                   panelCallapseOpen.forEach((elem) => {
+                      
+                     if(target.closest('.construct-btn') === document.querySelector('.construct-btn') && target.closest('.construct-btn').closest(`${'#'}${elem}`) === document.getElementById(`${elem}`)){
+                         panelOpenButt(document.getElementById(`${elem}`).id)
+                     }
+                   
                    })
                 //    panelCallapseOpen.forEach((elem) => {
                 //     if(document.querySelector('.construct-btn') === target.closest('.construct-btn') || ){panelOpenButt(target.closest('#collapseOne').id)}    
@@ -132,11 +140,25 @@ window.addEventListener('DOMContentLoaded', function(){
 
                 });
 
+                //открытие вкладок при нажатие шапок конструктора 
                const panelOpenHead = (selector) => {
-                   console.log(selector)
+                   let collapseTab = document.getElementById(selector).nextElementSibling.id
+                
+                    panelCallapseOpen.forEach((elem) => {
+                        console.log(collapseTab, elem)
+                        if(collapseTab === elem){
+                            
+                            document.getElementById(collapseTab).classList.add('in')
+                        } else {
+                            
+                            //document.getElementById(collapseTab).classList.remove('in')
+                        }
+                    })
+                    
                }
+               //открытие вкладок при нажатии кнопок следующий шаг
                const panelOpenButt = (selector) => {
-                console.log(selector)
+                    console.log(selector)
                }
 
                     
