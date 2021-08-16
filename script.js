@@ -144,14 +144,16 @@ window.addEventListener('DOMContentLoaded', function(){
                const panelOpenHead = (selector) => {
                    let collapseTab = document.getElementById(selector).nextElementSibling.id
                 
+
+
                     panelCallapseOpen.forEach((elem) => {
-                        console.log(collapseTab, elem)
+                        
                         if(collapseTab === elem){
                             
                             document.getElementById(collapseTab).classList.add('in')
                         } else {
                             
-                            //document.getElementById(collapseTab).classList.remove('in')
+                            document.getElementById(collapseTab).classList.remove('in')
                         }
                     })
                     
