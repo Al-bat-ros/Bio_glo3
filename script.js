@@ -117,50 +117,50 @@ window.addEventListener('DOMContentLoaded', function(){
                $panelGroup.addEventListener('click', (event) => {
                    let target = event.target
 
-                   panelHeadOpen.forEach((elem) => {
-                       
+                   //при нажатие на шапку 
+                   panelHeadOpen.forEach((elem) => {  
                     if(document.getElementById(`${elem}`) === target.closest(`${'#'}${elem}`)){
                         panelOpenHead(target.closest(`${'#'}${elem}`).id)
                     }
                    })
 
-                   panelCallapseOpen.forEach((elem) => {
-                      
-                     if(target.closest('.construct-btn') === document.querySelector('.construct-btn') && target.closest('.construct-btn').closest(`${'#'}${elem}`) === document.getElementById(`${elem}`)){
-                         panelOpenButt(document.getElementById(`${elem}`).id)
-                     }
-                   
+                   //при нажатии нп кнопку "СЛЕДУЮЩИЙ ШАГ"
+                   panelCallapseOpen.forEach((elem, index) => {  
+                  
+                     if(target.closest('.construct-btn') != null && target.closest('.construct-btn').closest(`${'#'}${elem}`) === document.getElementById(`${elem}`)){
+                        panelOpenButt(document.getElementById(`${elem}`).id, panelCallapseOpen[index + 1])   
+                    }
                    })
-                //    panelCallapseOpen.forEach((elem) => {
-                //     if(document.querySelector('.construct-btn') === target.closest('.construct-btn') || ){panelOpenButt(target.closest('#collapseOne').id)}    
-                //    })
-                   
-                   //if(document.getElementById('headingOne') === target.closest('#headingOne')){panelOpenHead(target.closest('#headingOne').id)}
-                   //if(document.querySelector('.construct-btn') === target.closest('.construct-btn')){panelOpenButt(target.closest('#collapseOne').id)}
-
+                
                 });
 
                 //открытие вкладок при нажатие шапок конструктора 
                const panelOpenHead = (selector) => {
                    let collapseTab = document.getElementById(selector).nextElementSibling.id
-                
-
+                   
 
                     panelCallapseOpen.forEach((elem) => {
                         
                         if(collapseTab === elem){
-                            
-                            document.getElementById(collapseTab).classList.add('in')
-                        } else {
-                            
-                            document.getElementById(collapseTab).classList.remove('in')
+                           
+                            document.getElementById(elem).classList.add('in')
+                        
+                        } else if(collapseTab != elem){
+                           
+                            document.getElementById(elem).classList.remove('in')
+                        
                         }
                     })
                     
                }
                //открытие вкладок при нажатии кнопок следующий шаг
-               const panelOpenButt = (selector) => {
-                    console.log(selector)
+               const panelOpenButt = (selector, nextElem) => {
+                
+                    if(nextElem){
+                        document.getElementById(nextElem).classList.add('in')
+                        document.getElementById(selector).classList.remove('in')
+                    }
+                    
                }
 
                     
