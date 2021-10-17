@@ -38,7 +38,6 @@ window.addEventListener('DOMContentLoaded', function(){
 
               popupDiscount.addEventListener('click', (event) => {
                 let target = event.target;
-                console.log(target);
                 if (target.classList.contains('popup-close')){
                     popupDiscount.style.display = 'none';
                 } else if (target.classList.contains('popup-discount')){
@@ -108,7 +107,7 @@ window.addEventListener('DOMContentLoaded', function(){
      const colcAccordion = () => {
          const $calcResult = document.getElementById('calc-result'), // вывод результата
                $panelGroup = document.querySelector('.panel-group'), // панель калькулятора
-                
+               sum = 0, 
                panelHeadOpen = ['headingOne', 'headingTwo', 'headingThree', 'headingFour'], //шапки вкладок конструктора
                panelCallapseOpen = ['collapseOne', 'collapseTwo', 'collapseThree', 'collapseFour']; //кнопки следующий шаг
 
@@ -174,24 +173,34 @@ window.addEventListener('DOMContentLoaded', function(){
                          if(res) $calcResult.value = res;
                      }
                    
-                    let step = 1;
-                    let resNum = num;
+                    let step = 0;
                     let n = 0;
                     const idSet = setInterval(() => {
-                        resNum -= step;
-                        if (resNum <= 10){
+                        num -= step;
+                        if(num === 0){
+                            stepSetInterval(String(num))
+                        }
+                        if (num <= 10 && num !== 0){
                             step = 1;
                         } else {
-                            step = Math.round((resNum*10)/100);
+                            step = Math.round((num*10)/100);
                         }
                         stepSetInterval(n += step);
-                        if(resNum === 0){clearInterval(idSet)} 
+                        if(num === 0){
+                            clearInterval(idSet)
+                        } 
 
                     },10);
 
 
                }
-               enterResult(1234);
+               enterResult(10000);
+
+               const typeSeptick = () => {
+
+                  //enterResult(sum);
+               }
+               typeSeptick();
                
     }
     colcAccordion();
