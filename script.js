@@ -107,6 +107,9 @@ window.addEventListener('DOMContentLoaded', function(){
      const colcAccordion = () => {
          const $calcResult = document.getElementById('calc-result'), // вывод результата
                $panelGroup = document.querySelector('.panel-group'), // панель калькулятора
+               $onoffTypeSept = document.getElementById('myonoffswitch'), //switch одна/две камеры
+               $formControl = document.querySelectorAll('.form-control'), // диаметр и количество колец
+               $selectBox = document.querySelectorAll('.select-box'),
                sum = 0, 
                panelHeadOpen = ['headingOne', 'headingTwo', 'headingThree', 'headingFour'], //шапки вкладок конструктора
                panelCallapseOpen = ['collapseOne', 'collapseTwo', 'collapseThree', 'collapseFour']; //кнопки следующий шаг
@@ -194,14 +197,30 @@ window.addEventListener('DOMContentLoaded', function(){
 
 
                }
-               enterResult(10000);
-
+               enterResult();
+            
+            // тип септика
                const typeSeptick = () => {
-
-                  //enterResult(sum);
+                   $onoffTypeSept.addEventListener('change', (event) => {
+                        if($onoffTypeSept.checked){
+                            enterResult(sum + 10000)
+                        } else {
+                            enterResult(sum + 15000)
+                        }                     
+                   })  
                }
                typeSeptick();
-               
+
+            // Диаметр и количество колец
+               const diameterNamberRings = () => {
+               for( let box of $selectBox){
+                  for(let opt of box.childNodes[3]){
+                    
+                  }
+               } 
+
+               }
+               diameterNamberRings();
     }
     colcAccordion();
 
