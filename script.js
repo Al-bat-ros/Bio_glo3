@@ -109,11 +109,11 @@ window.addEventListener('DOMContentLoaded', function(){
                $panelGroup = document.querySelector('.panel-group'), // панель калькулятора
                $onoffTypeSept = document.getElementById('myonoffswitch'), //switch одна/две камеры
                $formControl = document.querySelectorAll('.form-control'), // диаметр и количество колец
-               $selectBox = document.querySelectorAll('.select-box'),
-               sum = 0, 
+               $selectBox = document.querySelectorAll('.select-box'), 
                panelHeadOpen = ['headingOne', 'headingTwo', 'headingThree', 'headingFour'], //шапки вкладок конструктора
-               panelCallapseOpen = ['collapseOne', 'collapseTwo', 'collapseThree', 'collapseFour']; //кнопки следующий шаг
-
+               panelCallapseOpen = ['collapseOne', 'collapseTwo', 'collapseThree', 'collapseFour'], //кнопки следующий шаг
+               sum = {};
+        
                
                 //слушатель 
                $panelGroup.addEventListener('click', (event) => {
@@ -167,11 +167,25 @@ window.addEventListener('DOMContentLoaded', function(){
 
                     
     
-
-
+               const counterResult = (obj, result) => {
+                      let summa = 0;
+                       sum[obj] = result;
+                        
+                    for(let key in sum){
+                        if(key === 'typeSept'){
+                            summa = sum[key];
+                        } else {
+                            summa = summa * (1 + sum[key]/100);
+                        }
+                        console.log(summa)
+                    }
+                    console.log(sum)
+                    //    enterResult(sum)
+               }
+               
             // вывод результата   
                const enterResult = (num) => {
-                     
+                      
                      const stepSetInterval = (res) => {
                          if(res) $calcResult.value = res;
                      }
@@ -203,9 +217,10 @@ window.addEventListener('DOMContentLoaded', function(){
                const typeSeptick = () => {
                    $onoffTypeSept.addEventListener('change', (event) => {
                         if($onoffTypeSept.checked){
-                            enterResult(sum + 10000)
+                            counterResult('typeSept', 10000);
+                            
                         } else {
-                            enterResult(sum + 15000)
+                            counterResult('typeSept', 15000);
                         }                     
                    })  
                }
@@ -213,11 +228,37 @@ window.addEventListener('DOMContentLoaded', function(){
 
             // Диаметр и количество колец
                const diameterNamberRings = () => {
-               for( let box of $selectBox){
-                  for(let opt of box.childNodes[3]){
+
+                    const summ = (target, index, targetSelect) => {
+                       // console.log(target, index,  targetSelect);
+                        if(index === 0 && targetSelect === 1){
+                            counterResult('diameterOne', 20)
+                        } else if(index === 2 && targetSelect === 1){
+                            counterResult('diameterTwo', 20)
+                        } else if(index === 1 && targetSelect === 1){
+                            counterResult('numberRingsOne', 30)
+                        } else if(index === 1 && targetSelect === 2){
+                            counterResult('numberRingsOne', 50)
+                        }else if(index === 3 && targetSelect === 1){
+                            counterResult('numberRingsTwo', 20)
+                        } else if(index === 3 && targetSelect === 2){
+                            counterResult('numberRingsTwo', 40)
+                        }
+                    }
+
+                   $selectBox.forEach((box, index) => {
+                       box.addEventListener('click', (event) => {
+                            let target = event.target,
+                                targetSelect = target.selectedIndex;
+                                
+                            summ(target, index, targetSelect)
+                            
+
+                       })
+                   
                     
-                  }
-               } 
+                   })
+              
 
                }
                diameterNamberRings();
