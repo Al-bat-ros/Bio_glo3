@@ -108,11 +108,28 @@ window.addEventListener('DOMContentLoaded', function(){
          const $calcResult = document.getElementById('calc-result'), // вывод результата
                $panelGroup = document.querySelector('.panel-group'), // панель калькулятора
                $onoffTypeSept = document.getElementById('myonoffswitch'), //switch одна/две камеры
-               $formControl = document.querySelectorAll('.form-control'), // диаметр и количество колец
+               $onoffBottomWell = document.getElementById('myonoffswitch-two'), // switch наличи днища
                $selectBox = document.querySelectorAll('.select-box'), 
                panelHeadOpen = ['headingOne', 'headingTwo', 'headingThree', 'headingFour'], //шапки вкладок конструктора
                panelCallapseOpen = ['collapseOne', 'collapseTwo', 'collapseThree', 'collapseFour'], //кнопки следующий шаг
-               sum = {};
+               sumObj = {},
+               // объект с ценами 
+               selectOptionObj = {
+                    typeSeptOne: 10000, // однокамерный 
+                    typeSeptTwo: 15000, // двухкамерный
+
+                    diameterOneDef: 0,// диаметр первый колодец 1.4м
+                    diameterOne: 20, // диаметр первый колодец 2м  
+                    numberRingsOneOne: 0, // первый колодец, одно кольцо
+                    numberRingsOneTwo: 30, // первый колодец, два кольца
+                    numberRingsOneThree: 50, // первый колодец, три кольца
+                    
+                    diameterTwoDef: 0,// диаметр второй колодец 1.4м
+                    diameterTwo: 20, // диаметр второй колодец 2м
+                    numberRingsTwoOne: 0, // второй колодец, одно кольцо
+                    numberRingsTwoTwo: 20, // второй колодец, два кольца
+                    numberRingsTwoThree: 40 // второй колодец, три кольца
+               };
         
                
                 //слушатель 
@@ -168,19 +185,18 @@ window.addEventListener('DOMContentLoaded', function(){
                     
     
                const counterResult = (obj, result) => {
-                      let summa = 0;
-                       sum[obj] = result;
+                      let sumResult = 0;
+                       sumObj[obj] = result;
                         
-                    for(let key in sum){
+                    for(let key in sumObj){
                         if(key === 'typeSept'){
-                            summa = sum[key];
+                            sumResult = sumObj[key];
                         } else {
-                            summa = summa * (1 + sum[key]/100);
-                        }
-                        console.log(summa)
+                            sumResult = sumResult * (1 + sumObj[key]/100);
+                        }     
                     }
-                    console.log(sum)
-                    //    enterResult(sum)
+                        enterResult(Math.round(sumResult))
+                        sumResult = 0;      
                }
                
             // вывод результата   
@@ -189,7 +205,7 @@ window.addEventListener('DOMContentLoaded', function(){
                      const stepSetInterval = (res) => {
                          if(res) $calcResult.value = res;
                      }
-                   
+                     
                     let step = 0;
                     let n = 0;
                     const idSet = setInterval(() => {
@@ -217,10 +233,10 @@ window.addEventListener('DOMContentLoaded', function(){
                const typeSeptick = () => {
                    $onoffTypeSept.addEventListener('change', (event) => {
                         if($onoffTypeSept.checked){
-                            counterResult('typeSept', 10000);
+                            counterResult('typeSept', selectOptionObj.typeSeptOne);
                             
                         } else {
-                            counterResult('typeSept', 15000);
+                            counterResult('typeSept', selectOptionObj.typeSeptTwo);
                         }                     
                    })  
                }
@@ -229,29 +245,27 @@ window.addEventListener('DOMContentLoaded', function(){
             // Диаметр и количество колец
                const diameterNamberRings = () => {
 
-                    const summ = (target, index, targetSelect) => {
-                       // console.log(target, index,  targetSelect);
-                        if(index === 0 && targetSelect === 1){
-                            counterResult('diameterOne', 20)
-                        } else if(index === 2 && targetSelect === 1){
-                            counterResult('diameterTwo', 20)
-                        } else if(index === 1 && targetSelect === 1){
-                            counterResult('numberRingsOne', 30)
-                        } else if(index === 1 && targetSelect === 2){
-                            counterResult('numberRingsOne', 50)
-                        }else if(index === 3 && targetSelect === 1){
-                            counterResult('numberRingsTwo', 20)
-                        } else if(index === 3 && targetSelect === 2){
-                            counterResult('numberRingsTwo', 40)
-                        }
+                    const summFunc = (target, index, targetSelect) => {
+                        
+                       if(index === 0 && targetSelect === 0){counterResult('diameterOne', selectOptionObj.diameterOneDef)} //диаметр первый колодец 1.4м
+                        if(index === 0 && targetSelect === 1){counterResult('diameterOne', selectOptionObj.diameterOne)} // диаметр первый колодец 2м 
+                        if(index === 1 && targetSelect === 0){ counterResult('numberRingsOne', selectOptionObj.numberRingsOneOne) } // первый колодец, одно кольцо
+                        if(index === 1 && targetSelect === 1){ counterResult('numberRingsOne', selectOptionObj.numberRingsOneTwo) } // первый колодец, два кольца
+                        if(index === 1 && targetSelect === 2){counterResult('numberRingsOne', selectOptionObj.numberRingsOneThree) } // первый колодец, три кольца
+                        
+                        if(index === 2 && targetSelect === 0){counterResult('diameterTwo', selectOptionObj.diameterTwoDef) } // диаметр второй колодец 1.4м
+                        if(index === 2 && targetSelect === 1){counterResult('diameterTwo', selectOptionObj.diameterTwo) } // диаметр второй колодец 2м
+                        if(index === 3 && targetSelect === 0){counterResult('numberRingsTwo', selectOptionObj.numberRingsTwoOne) } // второй колодец, одно кольцо
+                        if(index === 3 && targetSelect === 1){counterResult('numberRingsTwo', selectOptionObj.numberRingsTwoTwo) }  // второй колодец, два кольца
+                        if(index === 3 && targetSelect === 2){counterResult('numberRingsTwo', selectOptionObj.numberRingsTwoThree) } // второй колодец, три кольца
                     }
 
                    $selectBox.forEach((box, index) => {
-                       box.addEventListener('click', (event) => {
+                       box.addEventListener('change', (event) => {
                             let target = event.target,
                                 targetSelect = target.selectedIndex;
                                 
-                            summ(target, index, targetSelect)
+                            summFunc(target, index, targetSelect)
                             
 
                        })
@@ -262,6 +276,20 @@ window.addEventListener('DOMContentLoaded', function(){
 
                }
                diameterNamberRings();
+
+            // наличие днища у колодца
+               const bottomWell = () => { 
+                    $onoffBottomWell.addEventListener('change', (event) => {
+                        if($onoffBottomWell.checked){
+                            console.log(true)
+                            counterResult('bottWell', 10) 
+                        } else {
+                            console.log(false)
+                            counterResult('bottWell', 20)
+                        }
+                    })
+               }
+               bottomWell();
     }
     colcAccordion();
 
